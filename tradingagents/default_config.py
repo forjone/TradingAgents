@@ -8,11 +8,11 @@ DEFAULT_CONFIG = {
         os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
         "dataflows/data_cache",
     ),
-    # LLM settings
-    "llm_provider": "openai",
-    "deep_think_llm": "o4-mini",
-    "quick_think_llm": "gpt-4o-mini",
-    "backend_url": "https://api.openai.com/v1",
+    # LLM settings - Modified to use DeepSeek-V3
+    "llm_provider": "openai",  # Use openai provider for API compatibility
+    "deep_think_llm": "DeepSeek-V3",
+    "quick_think_llm": "DeepSeek-V3", 
+    "backend_url": "https://api.modelarts-maas.com/v1",
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,

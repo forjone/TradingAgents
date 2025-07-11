@@ -7,6 +7,9 @@ class FinancialSituationMemory:
     def __init__(self, name, config):
         if config["backend_url"] == "http://localhost:11434/v1":
             self.embedding = "nomic-embed-text"
+        elif config["backend_url"] == "https://api.modelarts-maas.com/v1":
+            # DeepSeek可能使用自己的embedding模型，如果不支持则使用通用模型
+            self.embedding = "text-embedding-ada-002"  # 或者 "DeepSeek-V3" 如果支持
         else:
             self.embedding = "text-embedding-3-small"
         self.client = OpenAI(base_url=config["backend_url"])
