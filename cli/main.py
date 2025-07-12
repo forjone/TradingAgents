@@ -19,13 +19,40 @@ from rich.tree import Tree
 from rich import box
 from rich.align import Align
 from rich.rule import Rule
+import os
 
 from tradingagents.graph.trading_graph import TradingAgentsGraph
 from tradingagents.default_config import DEFAULT_CONFIG
 from cli.models import AnalystType
 from cli.utils import *
 
+# 加载.env文件中的环境变量
+def load_env_file():
+    """加载.env文件中的环境变量"""
+    env_file = Path(".env")
+    if env_file.exists():
+        print("📁 发现.env文件，正在加载环境变量...")
+        with open(env_file, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, value = line.split("=", 1)
+                    key = key.strip()
+                    value = value.strip()
+                    # 如果值被引号包围，去掉引号
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value[1:-1]
+                    elif value.startswith("'") and value.endswith("'"):
+                        value = value[1:-1]
+                    os.environ[key] = value
+        print("✅ .env文件已加载完成")
+    else:
+        print("⚠️  未发现.env文件，请确保已设置环境变量")
+
 console = Console()
+
+# 在程序开始时加载.env文件
+load_env_file()
 
 app = typer.Typer(
     name="TradingAgents",

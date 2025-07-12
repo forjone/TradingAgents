@@ -12,7 +12,7 @@ DEFAULT_CONFIG = {
     "llm_provider": "openai",  # Use openai provider for API compatibility
     "deep_think_llm": "DeepSeek-V3",
     "quick_think_llm": "DeepSeek-V3", 
-    "backend_url": "https://api.modelarts-maas.com/v1",
+    "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1",
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,
