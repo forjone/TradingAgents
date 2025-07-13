@@ -249,31 +249,23 @@ if st.button("🚀 开始分析", type="primary", use_container_width=True):
             "news_report": ""
         }
         
-        # 执行分析
+        # 执行分析并收集所有结果
         status_text.markdown('<p class="status-warning">🚀 正在执行多智能体分析...</p>', unsafe_allow_html=True)
         progress_bar.progress(30)
         
-        # 创建实时结果显示
-        with results_container:
-            st.subheader("📈 实时分析结果")
-            
-            # 创建列来显示不同类型的结果
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                market_report_area = st.empty()
-                fundamentals_report_area = st.empty()
-            
-            with col2:
-                news_report_area = st.empty()
-                sentiment_report_area = st.empty()
-            
-            final_decision_area = st.empty()
-            
-        # 流式处理分析结果
-        step_count = 0
-        total_steps = len(selected_analysts) * research_depth + 5  # 估算总步数
+        # 收集所有分析结果
+        all_results = {
+            "market_report": "",
+            "fundamentals_report": "",
+            "news_report": "", 
+            "sentiment_report": "",
+            "final_decision": ""
+        }
         
+        step_count = 0
+        total_steps = len(selected_analysts) * research_depth + 5
+        
+        # 流式处理分析结果（只更新进度，不更新UI）
         for chunk in graph.graph.stream(
             init_state, 
             config={"recursion_limit": 100},
@@ -283,44 +275,76 @@ if st.button("🚀 开始分析", type="primary", use_container_width=True):
             progress = min(30 + (step_count / total_steps) * 60, 90)
             progress_bar.progress(int(progress))
             
-            # 更新实时显示
+            # 收集结果但不立即显示
             if chunk.get("market_report"):
-                with market_report_area.container():
-                    st.markdown("### 📊 市场技术分析")
-                    st.markdown(chunk["market_report"])
+                all_results["market_report"] = chunk["market_report"]
             
             if chunk.get("fundamentals_report"):
-                with fundamentals_report_area.container():
-                    st.markdown("### 📈 基本面分析")
-                    st.markdown(chunk["fundamentals_report"])
+                all_results["fundamentals_report"] = chunk["fundamentals_report"]
             
             if chunk.get("news_report"):
-                with news_report_area.container():
-                    st.markdown("### 📰 新闻分析")
-                    st.markdown(chunk["news_report"])
+                all_results["news_report"] = chunk["news_report"]
             
             if chunk.get("sentiment_report"):
-                with sentiment_report_area.container():
-                    st.markdown("### 💭 情感分析")
-                    st.markdown(chunk["sentiment_report"])
+                all_results["sentiment_report"] = chunk["sentiment_report"]
             
-            # 检查是否有最终决策
+            # 检查最终决策
             messages = chunk.get("messages", [])
             if messages:
                 last_message = messages[-1]
                 if hasattr(last_message, 'content') and "FINAL TRANSACTION PROPOSAL" in str(last_message.content):
-                    with final_decision_area.container():
-                        st.markdown("### 🎯 最终交易决策")
-                        st.markdown(last_message.content)
-                        
-                        # 解析交易决策
-                        content = str(last_message.content)
-                        if "**BUY**" in content:
-                            st.success("📈 推荐操作：买入 (BUY)")
-                        elif "**SELL**" in content:
-                            st.error("📉 推荐操作：卖出 (SELL)")
-                        elif "**HOLD**" in content:
-                            st.info("⏸️ 推荐操作：持有 (HOLD)")
+                    all_results["final_decision"] = str(last_message.content)
+        
+        # 分析完成后一次性显示所有结果
+        with results_container:
+            st.subheader("📈 分析结果")
+            
+            # 创建标签页来组织结果
+            tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 技术分析", "📈 基本面", "📰 新闻", "💭 情感", "🎯 交易决策"])
+            
+            with tab1:
+                if all_results["market_report"]:
+                    st.markdown("### 📊 市场技术分析")
+                    st.markdown(all_results["market_report"])
+                else:
+                    st.info("未生成市场技术分析报告")
+            
+            with tab2:
+                if all_results["fundamentals_report"]:
+                    st.markdown("### 📈 基本面分析")
+                    st.markdown(all_results["fundamentals_report"])
+                else:
+                    st.info("未生成基本面分析报告")
+            
+            with tab3:
+                if all_results["news_report"]:
+                    st.markdown("### 📰 新闻分析")
+                    st.markdown(all_results["news_report"])
+                else:
+                    st.info("未生成新闻分析报告")
+            
+            with tab4:
+                if all_results["sentiment_report"]:
+                    st.markdown("### 💭 情感分析")
+                    st.markdown(all_results["sentiment_report"])
+                else:
+                    st.info("未生成情感分析报告")
+            
+            with tab5:
+                if all_results["final_decision"]:
+                    st.markdown("### 🎯 最终交易决策")
+                    st.markdown(all_results["final_decision"])
+                    
+                    # 解析交易决策
+                    content = all_results["final_decision"]
+                    if "**BUY**" in content:
+                        st.success("📈 推荐操作：买入 (BUY)")
+                    elif "**SELL**" in content:
+                        st.error("📉 推荐操作：卖出 (SELL)")
+                    elif "**HOLD**" in content:
+                        st.info("⏸️ 推荐操作：持有 (HOLD)")
+                else:
+                    st.info("正在生成最终交易决策...")
         
         # 分析完成
         progress_bar.progress(100)

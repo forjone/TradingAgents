@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
 echo ========================================
-echo 🌐 TradingAgents 网页版启动器
+echo 🌐 TradingAgents 网页版启动器 (修复版)
 echo ========================================
 echo.
 
@@ -21,10 +21,12 @@ echo 💡 应用将在浏览器中自动打开
 echo 📝 如果没有自动打开，请访问: http://localhost:8501
 echo.
 echo ⚠️  按 Ctrl+C 可以停止应用
+echo 🔧 使用修复版本，解决了DOM节点错误
 echo ========================================
 echo.
 
-streamlit run web_app.py
+REM 使用修复版本的网页应用
+streamlit run web_app_fixed.py
 
 echo.
 echo 📴 应用已停止

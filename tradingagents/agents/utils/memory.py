@@ -36,7 +36,18 @@ class FinancialSituationMemory:
             self.embedding_client = None
         
         self.chroma_client = chromadb.Client(Settings(allow_reset=True))
-        self.situation_collection = self.chroma_client.create_collection(name=name)
+        # 使用 get_or_create_collection 避免集合已存在的错误
+        try:
+            self.situation_collection = self.chroma_client.get_or_create_collection(name=name)
+        except Exception as e:
+            # 如果还是有问题，尝试删除现有集合并重新创建
+            try:
+                self.chroma_client.delete_collection(name=name)
+                self.situation_collection = self.chroma_client.create_collection(name=name)
+            except Exception:
+                # 最后的退路：重置整个客户端
+                self.chroma_client.reset()
+                self.situation_collection = self.chroma_client.create_collection(name=name)
 
     def get_embedding(self, text):
         """Get embedding for a text using the configured provider"""
