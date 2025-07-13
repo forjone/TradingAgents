@@ -1,28 +1,60 @@
 import chromadb
 from chromadb.config import Settings
 from openai import OpenAI
+import os
 
 
 class FinancialSituationMemory:
     def __init__(self, name, config):
+        self.config = config
+        self.llm_provider = config.get("llm_provider", "openai").lower()
+        
         if config["backend_url"] == "http://localhost:11434/v1":
             self.embedding = "nomic-embed-text"
+            self.client = OpenAI(base_url=config["backend_url"])
+            self.embedding_client = None
         elif config["backend_url"] == "https://api.modelarts-maas.com/v1":
             # DeepSeek可能使用自己的embedding模型，如果不支持则使用通用模型
             self.embedding = "text-embedding-ada-002"  # 或者 "DeepSeek-V3" 如果支持
+            self.client = OpenAI(base_url=config["backend_url"])
+            self.embedding_client = None
+        elif self.llm_provider == "google":
+            # Google使用langchain-google-genai的embedding
+            self.embedding = "text-embedding-004"
+            self.client = None  # Google不使用OpenAI客户端
+            try:
+                from langchain_google_genai import GoogleGenerativeAIEmbeddings
+                self.embedding_client = GoogleGenerativeAIEmbeddings(
+                    model="models/text-embedding-004",
+                    google_api_key=os.getenv("GOOGLE_API_KEY")
+                )
+            except ImportError:
+                raise ImportError("请安装langchain-google-genai包: pip install langchain-google-genai")
         else:
             self.embedding = "text-embedding-3-small"
-        self.client = OpenAI(base_url=config["backend_url"])
+            self.client = OpenAI(base_url=config["backend_url"])
+            self.embedding_client = None
+        
         self.chroma_client = chromadb.Client(Settings(allow_reset=True))
         self.situation_collection = self.chroma_client.create_collection(name=name)
 
     def get_embedding(self, text):
-        """Get OpenAI embedding for a text"""
+        """Get embedding for a text using the configured provider"""
         
-        response = self.client.embeddings.create(
-            model=self.embedding, input=text
-        )
-        return response.data[0].embedding
+        if self.llm_provider == "google":
+            # 使用Google的embedding API
+            try:
+                embedding = self.embedding_client.embed_query(text)
+                return embedding
+            except Exception as e:
+                print(f"Google embedding error: {e}")
+                raise
+        else:
+            # 使用OpenAI格式的embedding API
+            response = self.client.embeddings.create(
+                model=self.embedding, input=text
+            )
+            return response.data[0].embedding
 
     def add_situations(self, situations_and_advice):
         """Add financial situations and their corresponding advice. Parameter is a list of tuples (situation, rec)"""
