@@ -25,3 +25,5 @@ questionary
 typer
 langchain_anthropic
 langchain-google-genai
+streamlit
+plotly
