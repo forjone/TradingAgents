@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "========================================"
-echo "🌐 TradingAgents 网页版启动器 (修复版)"
+echo "🌐 TradingAgents 网页版启动器"
 echo "========================================"
 echo
 
@@ -21,7 +21,10 @@ echo "📝 如果没有自动打开，请访问: http://localhost:8501"
 echo "🌐 网络访问地址: http://YOUR_SERVER_IP:8501"
 echo
 echo "⚠️  按 Ctrl+C 可以停止应用"
-echo "🔧 使用修复版本，解决了DOM节点错误"
+echo "🔧 支持DeepSeek-R1和DeepSeek-V3双模型配置"
+echo "🧠 DeepSeek-R1: 深度思考，复杂分析"
+echo "⚡ DeepSeek-V3: 快速响应，实时分析"
+echo "🌟 Gemini Flash: 多模态，创新功能"
 echo "========================================"
 echo
 

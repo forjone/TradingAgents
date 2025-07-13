@@ -162,7 +162,8 @@ with st.sidebar:
     # LLM提供商选择
     st.subheader("🤖 LLM提供商")
     llm_providers = {
-        "DeepSeek": ("deepseek", "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1"),
+        "DeepSeek-R1": ("deepseek", "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/8a062fd4-7367-4ab4-a936-5eeb8fb821c4/v1"),
+        "DeepSeek-V3": ("deepseek", "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1"),
         "OpenAI": ("openai", "https://api.openai.com/v1"),
         "Google Gemini": ("google", ""),
         "Local Ollama": ("ollama", "http://localhost:11434/v1")
@@ -176,17 +177,26 @@ with st.sidebar:
     
     provider_code, backend_url = llm_providers[selected_provider]
     
-    # 思维模型选择
-    model_options = {
-        "deepseek": ["DeepSeek-V3", "DeepSeek-R1"],
-        "openai": ["gpt-4o", "gpt-4o-mini", "o1-preview", "o1-mini"],
-        "google": ["gemini-2.0-flash-exp", "gemini-1.5-pro"],
-        "ollama": ["llama3.2", "qwen2.5"]
-    }
-    
-    thinking_models = model_options.get(provider_code, ["DeepSeek-V3"])
-    deep_model = st.selectbox("🧠 深度思维模型", thinking_models, index=0)
-    quick_model = st.selectbox("⚡ 快速思维模型", thinking_models, index=0)
+    # 根据选择的DeepSeek版本自动设置模型
+    if "DeepSeek-R1" in selected_provider:
+        deep_model = "DeepSeek-R1"
+        quick_model = "DeepSeek-R1"
+        st.info("🤖 已选择 DeepSeek-R1 模型")
+    elif "DeepSeek-V3" in selected_provider:
+        deep_model = "DeepSeek-V3"
+        quick_model = "DeepSeek-V3"
+        st.info("🤖 已选择 DeepSeek-V3 模型")
+    else:
+        # 其他LLM提供商的模型选择
+        model_options = {
+            "openai": ["gpt-4o", "gpt-4o-mini", "o1-preview", "o1-mini"],
+            "google": ["gemini-2.0-flash-exp", "gemini-1.5-pro"],
+            "ollama": ["llama3.2", "qwen2.5"]
+        }
+        
+        thinking_models = model_options.get(provider_code, ["gpt-4o"])
+        deep_model = st.selectbox("🧠 深度思维模型", thinking_models, index=0)
+        quick_model = st.selectbox("⚡ 快速思维模型", thinking_models, index=0)
 
 # 分析按钮和状态管理
 if 'analysis_running' not in st.session_state:

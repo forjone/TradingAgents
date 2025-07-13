@@ -8,8 +8,9 @@ import getpass
 
 def setup_deepseek_env():
     """设置DeepSeek环境变量"""
-    print("\n🔧 配置DeepSeek-V3环境")
+    print("\n🔧 配置DeepSeek环境")
     print("=" * 40)
+    print("支持DeepSeek-R1和DeepSeek-V3两个模型")
     
     current_key = os.getenv("OPENAI_API_KEY")
     if current_key:
@@ -22,6 +23,7 @@ def setup_deepseek_env():
     
     print("\n请输入您的DeepSeek API密钥:")
     print("(DeepSeek使用OpenAI兼容的API，所以设置OPENAI_API_KEY)")
+    print("(支持DeepSeek-R1和DeepSeek-V3两个模型)")
     
     api_key = getpass.getpass("DeepSeek API Key: ").strip()
     
@@ -33,6 +35,7 @@ def setup_deepseek_env():
         with open(".env", "w") as f:
             f.write(f"OPENAI_API_KEY={api_key}\n")
         print("✅ 已保存到.env文件")
+        print("💡 现在可以使用DeepSeek-R1和DeepSeek-V3两个模型")
     else:
         print("❌ 未输入API密钥")
 
@@ -116,17 +119,22 @@ def create_env_template():
     """创建环境变量模板"""
     template = """# TradingAgents 环境变量配置文件
 # 
-# DeepSeek-V3 API密钥 (使用OpenAI兼容API)
+# DeepSeek API密钥 (支持R1和V3两个模型)
 OPENAI_API_KEY=your_deepseek_api_key_here
 
 # Google Gemini API密钥
 GOOGLE_API_KEY=your_google_api_key_here
 
+# DeepSeek模型配置 (华为云ModelArts)
+# DeepSeek-R1服务URL
+DEEPSEEK_R1_URL=https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/8a062fd4-7367-4ab4-a936-5eeb8fb821c4/v1
+
+# DeepSeek-V3服务URL  
+DEEPSEEK_V3_URL=https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1
+
 # 可选：设置默认LLM提供商
-# LLM_PROVIDER=deepseek
-    # LLM_BACKEND_URL=https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1
-# LLM_DEEP_THINK_MODEL=DeepSeek-V3
-# LLM_QUICK_THINK_MODEL=DeepSeek-V3
+# 可选值: deepseek_r1, deepseek_v3, gemini_flash
+# LLM_PROVIDER=deepseek_r1
 """
     
     with open(".env.template", "w") as f:
@@ -134,6 +142,7 @@ GOOGLE_API_KEY=your_google_api_key_here
     
     print("✅ 已创建.env.template模板文件")
     print("   您可以复制此文件为.env并填入真实的API密钥")
+    print("   现在支持DeepSeek-R1和DeepSeek-V3两个模型")
 
 def main():
     """主函数"""
@@ -179,9 +188,38 @@ def test_configuration():
     print("=" * 30)
     
     try:
-        from multi_llm_config import MultiLLMConfigManager
-        manager = MultiLLMConfigManager()
-        manager.list_available_configs()
+        from multi_llm_config import create_deepseek_r1_agent, create_deepseek_v3_agent, create_gemini_flash_agent
+        
+        deepseek_key = os.getenv("OPENAI_API_KEY")
+        gemini_key = os.getenv("GOOGLE_API_KEY")
+        
+        if deepseek_key:
+            print("✅ 可用模型:")
+            print("  - DeepSeek-R1 (推荐用于深度思考)")
+            print("  - DeepSeek-V3 (推荐用于快速响应)")
+            
+            # 测试DeepSeek-R1
+            try:
+                ta = create_deepseek_r1_agent(debug=False)
+                print("  ✅ DeepSeek-R1 初始化成功")
+            except Exception as e:
+                print(f"  ❌ DeepSeek-R1 初始化失败: {e}")
+            
+            # 测试DeepSeek-V3
+            try:
+                ta = create_deepseek_v3_agent(debug=False)
+                print("  ✅ DeepSeek-V3 初始化成功")
+            except Exception as e:
+                print(f"  ❌ DeepSeek-V3 初始化失败: {e}")
+        
+        if gemini_key:
+            print("  - Gemini Flash")
+            try:
+                ta = create_gemini_flash_agent(debug=False)
+                print("  ✅ Gemini Flash 初始化成功")
+            except Exception as e:
+                print(f"  ❌ Gemini Flash 初始化失败: {e}")
+        
         print("\n✅ 配置测试完成")
     except Exception as e:
         print(f"❌ 配置测试失败: {e}")

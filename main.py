@@ -1,20 +1,14 @@
-from tradingagents.graph.trading_graph import TradingAgentsGraph
-from tradingagents.default_config import DEFAULT_CONFIG
+from multi_llm_config import create_deepseek_r1_agent, create_deepseek_v3_agent, create_gemini_flash_agent
 
-# 方式1：使用默认配置（已修改为DeepSeek-V3）
-# ta = TradingAgentsGraph(debug=True, config=DEFAULT_CONFIG.copy())
+# 选择一个模型配置进行测试
+# 方式1：使用DeepSeek-R1（推荐用于深度思考）
+ta = create_deepseek_r1_agent(debug=True)
 
-# 方式2：创建自定义DeepSeek配置
-config = DEFAULT_CONFIG.copy()
-config["llm_provider"] = "deepseek"  # 使用deepseek提供商
-config["backend_url"] = "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1"  # DeepSeek API地址
-config["deep_think_llm"] = "DeepSeek-V3"  # 深度思考模型
-config["quick_think_llm"] = "DeepSeek-V3"  # 快速思考模型
-config["max_debate_rounds"] = 1  # 辩论轮数
-config["online_tools"] = True  # 使用在线工具
+# 方式2：使用DeepSeek-V3（推荐用于快速响应）
+# ta = create_deepseek_v3_agent(debug=True)
 
-# 初始化TradingAgents图
-ta = TradingAgentsGraph(debug=True, config=config)
+# 方式3：使用Gemini Flash（需要设置GOOGLE_API_KEY）
+# ta = create_gemini_flash_agent(debug=True)
 
 # 前向传播
 _, decision = ta.propagate("NVDA", "2024-05-10")

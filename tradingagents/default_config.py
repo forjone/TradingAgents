@@ -8,11 +8,11 @@ DEFAULT_CONFIG = {
         os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
         "dataflows/data_cache",
     ),
-    # LLM settings - Modified to use DeepSeek-V3
+    # LLM settings - Modified to use DeepSeek-R1
     "llm_provider": "openai",  # Use openai provider for API compatibility
-    "deep_think_llm": "DeepSeek-V3",
-    "quick_think_llm": "DeepSeek-V3", 
-    "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1",
+    "deep_think_llm": "DeepSeek-R1",
+    "quick_think_llm": "DeepSeek-R1", 
+    "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/8a062fd4-7367-4ab4-a936-5eeb8fb821c4/v1",
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,

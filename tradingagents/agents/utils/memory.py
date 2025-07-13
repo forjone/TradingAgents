@@ -13,7 +13,7 @@ class FinancialSituationMemory:
             self.embedding = "nomic-embed-text"
             self.client = OpenAI(base_url=config["backend_url"])
             self.embedding_client = None
-        elif config["backend_url"] == "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1":
+        elif config["backend_url"] == "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/8a062fd4-7367-4ab4-a936-5eeb8fb821c4/v1":
             # DeepSeek不支持embedding，使用简单的文本匹配作为备选
             self.embedding = None
             self.client = None
@@ -82,7 +82,7 @@ class FinancialSituationMemory:
                     # 如果都失败了，返回一个零向量作为默认值
                     print("返回默认零向量")
                     return [0.0] * 1536  # OpenAI embedding维度
-        elif self.config["backend_url"] == "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1":
+        elif self.config["backend_url"] == "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/8a062fd4-7367-4ab4-a936-5eeb8fb821c4/v1":
             # DeepSeek不支持embedding，使用简单的文本哈希作为代替
             # 这是一个简单的备选方案，不依赖外部API
             import hashlib
@@ -139,7 +139,7 @@ class FinancialSituationMemory:
         if self.situation_collection.count() == 0:
             return []
         
-        if self.config["backend_url"] == "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1":
+        if self.config["backend_url"] == "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/8a062fd4-7367-4ab4-a936-5eeb8fb821c4/v1":
             # DeepSeek不支持embedding，使用简单的文本匹配
             # 获取所有存储的情况
             all_results = self.situation_collection.get(include=["metadatas", "documents"])

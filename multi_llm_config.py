@@ -9,14 +9,24 @@ import os
 
 # 预定义的配置模板
 LLM_CONFIGS = {
-    "deepseek": {
+    "deepseek_r1": {
+        "name": "DeepSeek-R1",
+        "llm_provider": "deepseek",
+        "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/8a062fd4-7367-4ab4-a936-5eeb8fb821c4/v1",
+        "deep_think_llm": "DeepSeek-R1",
+        "quick_think_llm": "DeepSeek-R1",
+        "api_key_env": "OPENAI_API_KEY",  # DeepSeek使用OpenAI兼容的密钥
+        "description": "DeepSeek-R1 - 强大的推理模型，具备思维链推理能力"
+    },
+    
+    "deepseek_v3": {
         "name": "DeepSeek-V3",
         "llm_provider": "deepseek",
         "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1",
         "deep_think_llm": "DeepSeek-V3",
         "quick_think_llm": "DeepSeek-V3",
         "api_key_env": "OPENAI_API_KEY",  # DeepSeek使用OpenAI兼容的密钥
-        "description": "DeepSeek-V3 - 强大的推理模型，成本效益高"
+        "description": "DeepSeek-V3 - 高效的多模态语言模型，性价比高"
     },
     
     "gemini_flash": {
@@ -42,11 +52,11 @@ LLM_CONFIGS = {
     "hybrid_deepseek_gemini": {
         "name": "混合模式: DeepSeek思考 + Gemini执行",
         "llm_provider": "deepseek",  # 主要提供商
-        "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1",
-        "deep_think_llm": "DeepSeek-V3",  # 深度思考用DeepSeek
-        "quick_think_llm": "DeepSeek-V3",  # 快速思考也用DeepSeek
+        "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/8a062fd4-7367-4ab4-a936-5eeb8fb821c4/v1",
+        "deep_think_llm": "DeepSeek-R1",  # 深度思考用DeepSeek-R1
+        "quick_think_llm": "DeepSeek-R1",  # 快速思考也用DeepSeek-R1
         "api_key_env": "OPENAI_API_KEY",
-        "description": "混合模式 - DeepSeek深度思考，性价比最优"
+        "description": "混合模式 - DeepSeek-R1深度思考，性价比最优"
     }
 }
 
@@ -111,10 +121,20 @@ class MultiLLMConfigManager:
         return TradingAgentsGraph(config=config, **kwargs)
 
 # 便捷函数
-def create_deepseek_agent(**kwargs):
+def create_deepseek_r1_agent(**kwargs):
+    """创建DeepSeek-R1智能体"""
+    manager = MultiLLMConfigManager()
+    return manager.create_trading_graph("deepseek_r1", **kwargs)
+
+def create_deepseek_v3_agent(**kwargs):
     """创建DeepSeek-V3智能体"""
     manager = MultiLLMConfigManager()
-    return manager.create_trading_graph("deepseek", **kwargs)
+    return manager.create_trading_graph("deepseek_v3", **kwargs)
+
+def create_deepseek_agent(**kwargs):
+    """创建DeepSeek智能体（默认使用R1模型）"""
+    manager = MultiLLMConfigManager()
+    return manager.create_trading_graph("deepseek_r1", **kwargs)
 
 def create_gemini_flash_agent(**kwargs):
     """创建Gemini Flash智能体"""
@@ -127,7 +147,7 @@ def create_gemini_pro_agent(**kwargs):
     return manager.create_trading_graph("gemini_pro", **kwargs)
 
 def create_hybrid_agent(**kwargs):
-    """创建混合模式智能体"""
+    """创建混合模式智能体（使用DeepSeek-R1）"""
     manager = MultiLLMConfigManager()
     return manager.create_trading_graph("hybrid_deepseek_gemini", **kwargs)
 

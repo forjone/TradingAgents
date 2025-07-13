@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 TradingAgents 快速开始脚本
-快速测试DeepSeek-V3和Google Gemini配置
+快速测试DeepSeek-R1、DeepSeek-V3和Google Gemini配置
 """
 
 import os
@@ -26,7 +26,7 @@ def check_environment():
     
     available_models = []
     if deepseek_key:
-        available_models.append("DeepSeek-V3")
+        available_models.extend(["DeepSeek-R1", "DeepSeek-V3"])
     if gemini_key:
         available_models.append("Gemini")
     
@@ -38,29 +38,38 @@ def quick_test():
     print("\n🚀 开始快速测试...")
     
     try:
-        from multi_llm_config import MultiLLMConfigManager
-        
-        manager = MultiLLMConfigManager()
+        from multi_llm_config import create_deepseek_r1_agent, create_deepseek_v3_agent, create_gemini_flash_agent
         
         # 检查可用配置
-        print("\n📋 可用的LLM配置:")
-        manager.list_available_configs()
-        
-        # 选择一个可用的配置进行测试
         deepseek_key = os.getenv("OPENAI_API_KEY")
         gemini_key = os.getenv("GOOGLE_API_KEY")
         
         if deepseek_key:
+            print("\n🧪 测试DeepSeek-R1...")
+            try:
+                ta = create_deepseek_r1_agent(debug=False)
+                print("✅ DeepSeek-R1 初始化成功！")
+                
+                # 可选：运行一个快速分析
+                choice = input("\n是否运行DeepSeek-R1快速分析测试? (y/n): ").lower().strip()
+                if choice == 'y':
+                    print("正在用DeepSeek-R1分析 AAPL...")
+                    _, decision = ta.propagate("AAPL", "2024-05-10")
+                    print(f"✅ 分析完成，决策: {decision}")
+                    
+            except Exception as e:
+                print(f"❌ DeepSeek-R1 测试失败: {e}")
+            
             print("\n🧪 测试DeepSeek-V3...")
             try:
-                ta = manager.create_trading_graph("deepseek", debug=False)
+                ta = create_deepseek_v3_agent(debug=False)
                 print("✅ DeepSeek-V3 初始化成功！")
                 
                 # 可选：运行一个快速分析
-                choice = input("\n是否运行快速分析测试? (y/n): ").lower().strip()
+                choice = input("\n是否运行DeepSeek-V3快速分析测试? (y/n): ").lower().strip()
                 if choice == 'y':
-                    print("正在分析 AAPL...")
-                    _, decision = ta.propagate("AAPL", "2024-05-10")
+                    print("正在用DeepSeek-V3分析 TSLA...")
+                    _, decision = ta.propagate("TSLA", "2024-05-10")
                     print(f"✅ 分析完成，决策: {decision}")
                     
             except Exception as e:
@@ -69,14 +78,14 @@ def quick_test():
         if gemini_key:
             print("\n🧪 测试Gemini Flash...")
             try:
-                ta = manager.create_trading_graph("gemini_flash", debug=False)
+                ta = create_gemini_flash_agent(debug=False)
                 print("✅ Gemini Flash 初始化成功！")
                 
                 # 可选：运行一个快速分析
-                choice = input("\n是否运行快速分析测试? (y/n): ").lower().strip()
+                choice = input("\n是否运行Gemini Flash快速分析测试? (y/n): ").lower().strip()
                 if choice == 'y':
-                    print("正在分析 TSLA...")
-                    _, decision = ta.propagate("TSLA", "2024-05-10")
+                    print("正在用Gemini Flash分析 MSFT...")
+                    _, decision = ta.propagate("MSFT", "2024-05-10")
                     print(f"✅ 分析完成，决策: {decision}")
                     
             except Exception as e:
@@ -100,12 +109,17 @@ def show_next_steps():
     
     print("\n💡 代码示例:")
     print("""
-# 使用DeepSeek-V3
-from multi_llm_config import create_deepseek_agent
-ta = create_deepseek_agent(debug=True)
+# 使用DeepSeek-R1 (推荐用于深度思考)
+from multi_llm_config import create_deepseek_r1_agent
+ta = create_deepseek_r1_agent(debug=True)
 _, decision = ta.propagate("NVDA", "2024-05-10")
 
-# 使用Gemini
+# 使用DeepSeek-V3 (推荐用于快速响应)
+from multi_llm_config import create_deepseek_v3_agent
+ta = create_deepseek_v3_agent(debug=True)
+_, decision = ta.propagate("NVDA", "2024-05-10")
+
+# 使用Gemini Flash
 from multi_llm_config import create_gemini_flash_agent  
 ta = create_gemini_flash_agent(debug=True)
 _, decision = ta.propagate("NVDA", "2024-05-10")
@@ -115,7 +129,7 @@ def main():
     """主函数"""
     print("🎯 TradingAgents 快速开始")
     print("=" * 50)
-    print("支持DeepSeek-V3和Google Gemini模型")
+    print("支持DeepSeek-R1、DeepSeek-V3和Google Gemini模型")
     
     # 检查环境
     if not check_environment():

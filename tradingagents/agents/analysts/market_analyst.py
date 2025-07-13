@@ -72,9 +72,16 @@ Volume-Based Indicators:
         prompt = prompt.partial(current_date=current_date)
         prompt = prompt.partial(ticker=ticker)
 
-        chain = prompt | llm.bind_tools(tools)
-
-        result = chain.invoke(state["messages"])
+        # 检查是否为华为云 DeepSeek 服务，如果是则禁用工具调用
+        if ("maas-cn-southwest-2.modelarts-maas.com" in toolkit.config.get("backend_url", "")):
+            # 华为云 DeepSeek 不支持标准工具调用，直接使用 LLM
+            chain = prompt | llm
+            result = chain.invoke(state["messages"])
+            # 模拟空的工具调用
+            result.tool_calls = []
+        else:
+            chain = prompt | llm.bind_tools(tools)
+            result = chain.invoke(state["messages"])
 
         report = ""
 

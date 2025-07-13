@@ -369,9 +369,9 @@ class AgentState(MessagesState):
 ```python
 config = {
     "llm_provider": "deepseek",
-    "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1",
-    "deep_think_llm": "DeepSeek-V3",
-    "quick_think_llm": "DeepSeek-V3",
+    "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/8a062fd4-7367-4ab4-a936-5eeb8fb821c4/v1",
+    "deep_think_llm": "DeepSeek-R1",
+    "quick_think_llm": "DeepSeek-R1",
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,
     "online_tools": True
@@ -607,9 +607,9 @@ DEFAULT_CONFIG = {
     "project_dir": "项目根目录",
     "results_dir": "./results",
     "llm_provider": "openai",
-    "deep_think_llm": "DeepSeek-V3",
-    "quick_think_llm": "DeepSeek-V3",
-    "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1",
+    "deep_think_llm": "DeepSeek-R1",
+    "quick_think_llm": "DeepSeek-R1",
+    "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/8a062fd4-7367-4ab4-a936-5eeb8fb821c4/v1",
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,
     "online_tools": True
