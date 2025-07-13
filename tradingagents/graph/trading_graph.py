@@ -59,8 +59,25 @@ class TradingAgentsGraph:
 
         # Initialize LLMs
         if self.config["llm_provider"].lower() == "openai" or self.config["llm_provider"] == "ollama" or self.config["llm_provider"] == "openrouter" or self.config["llm_provider"].lower() == "deepseek":
-            self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
-            self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])
+            # 为DeepSeek添加SSL配置
+            extra_kwargs = {}
+            if self.config["llm_provider"].lower() == "deepseek":
+                import ssl
+                extra_kwargs["http_client"] = None  # 使用默认的httpx客户端
+                # 清除SSL_CERT_FILE环境变量以避免权限问题
+                if "SSL_CERT_FILE" in os.environ:
+                    del os.environ["SSL_CERT_FILE"]
+            
+            self.deep_thinking_llm = ChatOpenAI(
+                model=self.config["deep_think_llm"], 
+                base_url=self.config["backend_url"],
+                **extra_kwargs
+            )
+            self.quick_thinking_llm = ChatOpenAI(
+                model=self.config["quick_think_llm"], 
+                base_url=self.config["backend_url"],
+                **extra_kwargs
+            )
         elif self.config["llm_provider"].lower() == "anthropic":
             self.deep_thinking_llm = ChatAnthropic(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
             self.quick_thinking_llm = ChatAnthropic(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])
