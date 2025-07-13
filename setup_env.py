@@ -124,7 +124,7 @@ GOOGLE_API_KEY=your_google_api_key_here
 
 # 可选：设置默认LLM提供商
 # LLM_PROVIDER=deepseek
-# LLM_BACKEND_URL=https://api.modelarts-maas.com/v1
+    # LLM_BACKEND_URL=https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1
 # LLM_DEEP_THINK_MODEL=DeepSeek-V3
 # LLM_QUICK_THINK_MODEL=DeepSeek-V3
 """

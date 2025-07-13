@@ -253,7 +253,7 @@ def select_llm_provider() -> tuple[str, str]:
         ("Anthropic", "https://api.anthropic.com/"),
         ("Google", "https://generativelanguage.googleapis.com/v1"),
         ("Openrouter", "https://openrouter.ai/api/v1"),
-        ("DeepSeek", "https://api.modelarts-maas.com/v1"),
+        ("DeepSeek", "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1"),
         ("Ollama", "http://localhost:11434/v1"),        
     ]
     

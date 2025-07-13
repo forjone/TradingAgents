@@ -12,7 +12,7 @@ LLM_CONFIGS = {
     "deepseek": {
         "name": "DeepSeek-V3",
         "llm_provider": "deepseek",
-        "backend_url": "https://api.modelarts-maas.com/v1",
+        "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1",
         "deep_think_llm": "DeepSeek-V3",
         "quick_think_llm": "DeepSeek-V3",
         "api_key_env": "OPENAI_API_KEY",  # DeepSeek使用OpenAI兼容的密钥
@@ -42,7 +42,7 @@ LLM_CONFIGS = {
     "hybrid_deepseek_gemini": {
         "name": "混合模式: DeepSeek思考 + Gemini执行",
         "llm_provider": "deepseek",  # 主要提供商
-        "backend_url": "https://api.modelarts-maas.com/v1",
+        "backend_url": "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1",
         "deep_think_llm": "DeepSeek-V3",  # 深度思考用DeepSeek
         "quick_think_llm": "DeepSeek-V3",  # 快速思考也用DeepSeek
         "api_key_env": "OPENAI_API_KEY",

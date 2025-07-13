@@ -55,7 +55,7 @@ from tradingagents.default_config import DEFAULT_CONFIG
 # DeepSeek配置
 config = DEFAULT_CONFIG.copy()
 config["llm_provider"] = "deepseek"
-config["backend_url"] = "https://api.modelarts-maas.com/v1"
+config["backend_url"] = "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1"
 config["deep_think_llm"] = "DeepSeek-V3"
 config["quick_think_llm"] = "DeepSeek-V3"
 
@@ -187,7 +187,7 @@ manager.list_available_configs()
 ### 获取API密钥
 
 **DeepSeek API密钥：**
-- 访问：https://api.modelarts-maas.com/
+- 访问：https://maas-cn-southwest-2.modelarts-maas.com/
 - 注册并获取API密钥
 
 **Google Gemini API密钥：**

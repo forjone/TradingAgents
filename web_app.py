@@ -154,7 +154,7 @@ with st.sidebar:
     # LLM提供商选择
     st.subheader("🤖 LLM提供商")
     llm_providers = {
-        "DeepSeek": ("deepseek", "https://api.modelarts-maas.com/v1"),
+        "DeepSeek": ("deepseek", "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1"),
         "OpenAI": ("openai", "https://api.openai.com/v1"),
         "Google Gemini": ("google", ""),
         "Local Ollama": ("ollama", "http://localhost:11434/v1")

@@ -7,7 +7,7 @@ from tradingagents.default_config import DEFAULT_CONFIG
 # 方式2：创建自定义DeepSeek配置
 config = DEFAULT_CONFIG.copy()
 config["llm_provider"] = "deepseek"  # 使用deepseek提供商
-config["backend_url"] = "https://api.modelarts-maas.com/v1"  # DeepSeek API地址
+config["backend_url"] = "https://maas-cn-southwest-2.modelarts-maas.com/v1/infers/271c9332-4aa6-4ff5-95b3-0cf8bd94c394/v1"  # DeepSeek API地址
 config["deep_think_llm"] = "DeepSeek-V3"  # 深度思考模型
 config["quick_think_llm"] = "DeepSeek-V3"  # 快速思考模型
 config["max_debate_rounds"] = 1  # 辩论轮数
