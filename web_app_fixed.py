@@ -351,11 +351,20 @@ if start_analysis and not st.session_state.analysis_running:
         # 分析完成
         if st.session_state.analysis_running:
             progress_bar.progress(100)
+            
+            # 先设置状态为完成
+            st.session_state.analysis_running = False
+            
+            # 更新状态显示
             with status_container:
-                st.success("✅ 分析完成！")
+                st.success("✅ 分析完成！所有智能体已完成分析工作")
             
             # 保存结果到session state
             st.session_state.analysis_results = all_results
+            
+            # 显示完成提示
+            st.balloons()
+            st.success(f"🎉 对 {ticker} 的多智能体分析已完成！")
         
     except Exception as e:
         with status_container:
@@ -365,13 +374,24 @@ if start_analysis and not st.session_state.analysis_running:
         with st.expander("🔍 错误详情", expanded=False):
             import traceback
             st.code(traceback.format_exc())
+        
+        # 确保状态重置
+        st.session_state.analysis_running = False
     
     finally:
-        st.session_state.analysis_running = False
+        # 确保状态重置
+        if st.session_state.analysis_running:
+            st.session_state.analysis_running = False
 
 # 显示分析结果
 if st.session_state.analysis_results and not st.session_state.analysis_running:
     st.markdown("---")
+    
+    # 分析完成状态指示器
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.success("🎯 **分析状态：已完成** ✅")
+    
     st.subheader("📈 分析结果")
     
     results = st.session_state.analysis_results

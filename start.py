@@ -93,9 +93,10 @@ def main():
         print("5. 🎭 多模型演示")
         print("6. 🔧 环境配置")
         print("7. 🔍 环境检查")
+        print("8. 📊 分析状态检查")
         print("0. 退出")
         
-        choice = input("\n请输入选择 (0-7): ").strip()
+        choice = input("\n请输入选择 (0-8): ").strip()
         
         if choice == "0":
             print("👋 再见！")
@@ -117,6 +118,8 @@ def main():
                 print("✅ 环境配置正常")
             else:
                 print("❌ 环境配置有问题")
+        elif choice == "8":
+            run_script("check_analysis_status.py")
         else:
             print("❌ 无效选择，请重试")
 
