@@ -4,6 +4,14 @@ from .yfin_utils import YFinanceUtils
 from .reddit_utils import fetch_top_from_category
 from .stockstats_utils import StockstatsUtils
 from .yfin_utils import YFinanceUtils
+from .china_hk_utils import (
+    get_china_hk_stock_data,
+    get_china_hk_company_info,
+    validate_china_hk_ticker,
+    get_market_suggestions,
+    format_china_hk_report,
+    CHINA_HK_TICKERS,
+)
 
 from .interface import (
     # News and sentiment functions
@@ -43,4 +51,11 @@ __all__ = [
     # Market data functions
     "get_YFin_data_window",
     "get_YFin_data",
+    # China and Hong Kong markets
+    "get_china_hk_stock_data",
+    "get_china_hk_company_info", 
+    "validate_china_hk_ticker",
+    "get_market_suggestions",
+    "format_china_hk_report",
+    "CHINA_HK_TICKERS",
 ]

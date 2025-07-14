@@ -413,9 +413,16 @@ with st.sidebar:
     5. **开始分析**: 点击按钮开始实时分析
     """)
     
-    st.markdown("### 📚 支持的股票")
+    st.markdown("### 📚 支持的股票市场")
     st.markdown("""
-    - 🇺🇸 美股: AAPL, TSLA, NVDA, MSFT
-    - 🇨🇳 中概股: NIO, BABA, JD
-    - 📈 ETF: SPY, QQQ, ARKK
+    - 🇺🇸 **美股**: AAPL, TSLA, NVDA, MSFT
+    - 🇨🇳 **中概股**: NIO, BABA, JD, XPEV, LI
+    - 🇭🇰 **港股**: 0700.HK (腾讯), 9988.HK (阿里), 3690.HK (美团)
+    - 🇨🇳 **A股**: 600519.SS (茅台), 000858.SZ (五粮液)
+    - 📈 **ETF**: SPY, QQQ, ARKK
+    
+    **代码格式说明**：
+    - 港股：使用4位数字 + .HK (如：0700.HK)
+    - A股上海：使用6位数字 + .SS (如：600519.SS)
+    - A股深圳：使用6位数字 + .SZ (如：000858.SZ)
     """) 

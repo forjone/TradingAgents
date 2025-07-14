@@ -8,6 +8,7 @@ import os
 import re
 
 ticker_to_company = {
+    # 美股
     "AAPL": "Apple",
     "MSFT": "Microsoft",
     "GOOGL": "Google",
@@ -46,6 +47,39 @@ ticker_to_company = {
     "UBER": "Uber",
     "ROKU": "Roku",
     "PINS": "Pinterest",
+    
+    # 中概股 (在美上市)
+    "NIO": "NIO OR 蔚来",
+    "XPEV": "XPeng OR 小鹏汽车",
+    "LI": "Li Auto OR 理想汽车",
+    "JD": "JD.com OR 京东",
+    "PDD": "PDD OR 拼多多",
+    "DIDI": "DiDi OR 滴滴",
+    "BILI": "Bilibili OR 哔哩哔哩",
+    "TME": "Tencent Music OR 腾讯音乐",
+    
+    # 香港股票
+    "0700.HK": "Tencent OR 腾讯控股",
+    "9988.HK": "Alibaba OR 阿里巴巴",
+    "2318.HK": "Ping An OR 中国平安",
+    "0941.HK": "China Mobile OR 中国移动",
+    "3690.HK": "Meituan OR 美团",
+    "1299.HK": "AIA OR 友邦保险",
+    "2628.HK": "China Life OR 中国人寿",
+    "0388.HK": "HKEX OR 香港交易所",
+    "1398.HK": "ICBC OR 工商银行",
+    "3968.HK": "China Merchants Bank OR 招商银行",
+    
+    # 中国A股
+    "600000.SS": "Pudong Development Bank OR 浦发银行",
+    "600036.SS": "China Merchants Bank OR 招商银行",
+    "600519.SS": "Kweichow Moutai OR 贵州茅台",
+    "600276.SS": "Hengrui Medicine OR 恒瑞医药",
+    "000001.SZ": "Ping An Bank OR 平安银行",
+    "000002.SZ": "Vanke OR 万科A",
+    "000858.SZ": "Wuliangye OR 五粮液",
+    "002415.SZ": "Hikvision OR 海康威视",
+    "002594.SZ": "BYD OR 比亚迪",
 }
 
 
